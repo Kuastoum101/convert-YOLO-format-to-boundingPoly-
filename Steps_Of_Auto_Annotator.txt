@@ -1,0 +1,16 @@
+1) Dosya yollarının alınması (İmage ve Annotationslar İçin) (Annotation okuması 2. Basamak sonraso da yapılabilir)
+2) Resim Dosyalarının imread() okunması ve boyutlarının tespit edilmesi img.shape[:2]
+   https://stackoverflow.com/questions/33369832/read-multiple-images-on-a-folder-in-opencv-python
+   Bu linkteki bir yöntem ileride annotation içinde ilham olabilir
+
+3) Bir read_text fonksiyonu tanımlanarak Annotation Dosyalarındaki değerlerin okunması (str)
+4) Boş bir list oluşturulması
+5) Değerlerin list'e yazılması
+6) str leri int variable'a dönüştürülmesi
+7) '\n' ifadesini kaldırılması(?)
+8) List'in " " boşluklar üzerinden list.split() edilmesi
+9) Düzenlenen variablelara koordinat convert işlemi uygulanması
+   (Burda for loop kullanabiliriz tek bir işlemi birden fazla değere ayrı ayrı uygulamam gerek.Bu doğrultuda,
+   for loop kullanımına bakacağım)
+10) Elde edile değerlerin resimler üzerindeki elementleri göstermesi için rectangle çizdirilmesi
+11) Resimlerin bboxlar ile ekrana gösterilmesi

@@ -1,17 +1,22 @@
 import cv2
 import sys
+import os
+
+
+#resimlerin dosya yolunu al
 filename = sys.argv[1]
+
+path = filename
+for image in os.listdir(path):
+ print(image)
+#img = cv2.imread(img_list)
+#iki boyutu oku
+i_height,i_width = img.shape[:2]
+#annotation dosya yolunu al
 annatation_filename = sys.argv[2]
 print(filename)
-img = cv2.imread(filename)
-i_height,i_width = img.shape[:2] #firt two dimeansion
-window_name = 'cerceve'
+print(annatation_filename)
 
-# YOLO DEGERLERI (0 0.506757 0.548230 0.445946 0.241148)
-
-                #<object-class> <x> <y> <width> <height>
-'''Array umpack'''
-# Open a file: file
 file = open(annatation_filename, mode='r')
 
 # read all lines at once
@@ -60,7 +65,7 @@ thickness = 2
 # Draw a rectangle with blue line borders of thickness of 2 px
 img = cv2.rectangle(img, sol_ust, sag_alt, color, thickness)
 
-
+window_name = 'cerceve'
 cv2.imshow(window_name, img)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
