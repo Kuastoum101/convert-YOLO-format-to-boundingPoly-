@@ -1,6 +1,6 @@
 import os
 import cv2
-import predict
+from detector_inference_util import predict
 from pascal_voc_writer import Writer
 from pathlib import Path
 import shutil
