@@ -227,7 +227,7 @@ def predict_video(video_dir_path, bWriteVideo=False, bWriteDetection=False, bSho
         vcap.release()
         out.release()
 
-
+#Girdi ve cikti dizinleri ve detector'u parametre olarak alir
 def predict(input_path, _detector=None, output_path=None):
     global detector, colors, preprocessing
     if output_path is not None:
@@ -236,10 +236,15 @@ def predict(input_path, _detector=None, output_path=None):
         _detector = detector
 
     with torch.no_grad():
+        #Dizinin sadece bir dosyanin mi oldugu yoksa birden cok dosyanin mi oldugu bir dizin oldugunu kontrol eder
         if os.path.isfile(input_path):
             img_names = [input_path]
         else:
             img_names = os.listdir(input_path)
+        
+        #Decorate an iterable object, returning an iterator which acts exactly
+        #like the original iterable, but prints a dynamically updating
+        #progressbar every time a value is requested.
         for img_name in tqdm(img_names):
             orig_img = cv2.imread(os.path.join(input_path, img_name), cv2.IMREAD_UNCHANGED)
             if len(orig_img.shape) > 2 and orig_img.shape[2] == 4:
@@ -249,23 +254,34 @@ def predict(input_path, _detector=None, output_path=None):
 
             font_thickness = (orig_img.shape[0] + orig_img.shape[1]) // 1500
 
+            #Burada orjinal resim preprocessing islemi gorur
+            #Bu islemde verilerden ndarray olusturulur
+            #ndarray'ler, ozetle toplama ve cikarmalarin dongulere ihtiyac duyulmadan yapilabildigi cok boyutlu dizilerdir denilebilir
             image = preprocessing(orig_img)
+            
+            #Burada default detector kullaniliyor ise, oncelikle resimin verileri asarray fonksiyonu ile bir diziye donusturulur
+            #Ardindan input olarak girilen model ile detector objesinin _detect abstract fonksiyonu calistirilir
             # We use batch_size=1 here
             detections = _detector.detect_preprocessed(image, (1, *orig_img.shape))[0]
 
             text_content = []
 
             for detection in detections:
+                #Bulunan objelerin siniflari bulunur ve background ise atlanilir
                 class_idx = detection.class_id
                 class_name = class_names[class_idx]
                 if class_name == "__background__":
                     continue
+
                 score = detection.score
                 bbox = detection.bounding_box.to_xyxy(convert_to_integers=True)
                 x1, y1, x2, y2 = bbox
+
+                #Her bir tahmin sinif ismi, bounding box'lar ve score ile ekrana cizilir
                 text_content.append([class_name, score, x1, y1, x2, y2])
                 orig_img_rgb = draw_predictions(orig_img_rgb, class_name, class_idx, bbox, score, font_thickness)
 
+            #Eger cikti dizini bos degilse ciktilar kaydedilir
             if output_path is not None:
                 save_results(output_path, img_name, orig_img_rgb, text_content)
 

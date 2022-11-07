@@ -24,6 +24,8 @@ centernet2int_dict = {k: i for k, i in zip(cls2centernet_dict.values(), range(le
 waitkey_ms = 2000
 
 
+#Tum tahminler, hesaplamalar ve bounding box'lar hesaplanip
+#alt fonksiyon olan centernet_parser ile de ayristirilir
 def execute_center_detection(path):
     center_preds = predict(path)
     return centernet_parser(center_preds)
@@ -163,6 +165,8 @@ def image_writer(_image):
     filename = "image{:03d}.jpeg".format(counter)
     cv2.imwrite(filename, _image)
 
+#Predict fonksiyonundan gelen ciktilar tahminler, skorlar ve bounding box'lar olarak farkli listelere
+#tum veriler iterate edilerek eklenir
 def centernet_parser(inp_center_preds):
     preds = []; scores = []; bboxes = []
     for center_pr in inp_center_preds:
