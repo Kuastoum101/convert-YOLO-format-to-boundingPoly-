@@ -1,1 +1,5 @@
-yolov7-e6e.pt
+#Python Cache
+__pycache__/
+
+#Ignore huge model files
+*.pt
